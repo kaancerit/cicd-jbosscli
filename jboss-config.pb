@@ -17,6 +17,7 @@
                   ssl:add(keystore-path=/JBOSS/Certificate/identity_keystore.jks, \
                   keystore-relative-to=jboss.domain.config.dir, \
                   keystore-password={{jboss_jks_pass}}, alias=jbossserver)
+                  # Stop embadded controller
                   stop-embedded-host-controller
                   exit
       become: yes
