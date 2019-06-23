@@ -26,8 +26,7 @@
                   /profile=full-ha/subsystem=datasources/xa-data-source=OraSource/xa-datasource-properties="URL":add(value="jdbc:oracle:thin:@{{ DBIP }}:{{ DBPORT }}:{{ DBSN }}")
                   /profile=full-ha/subsystem=datasources/xa-data-source=XAOracleDS:add(driver-name=oracleXA,enabled=true,jndi-name="java:/XAOracleDS",use-ccm=true,user-name={{XAUSERNAME}},password={{XAPASSWORD}},min-pool-size=1,initial-pool-size=10,max-pool-size=200,same-rm-override=false,no-tx-separate-pool=true,valid-connection-checker-class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleValidConnectionChecker",validate-on-match=true,background-validation=false,stale-connection-checker-class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleStaleConnectionChecker",exception-sorter-class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleExceptionSorter")
                   /profile=full-ha/subsystem=datasources/xa-data-source=XAOracleDS/xa-datasource-properties="URL":add(value="jdbc:oracle:thin:@{{ DBIP }}:{{ DBPORT }}:{{ DBSN }}")
-
-                  
+  
                   # Stop embadded controller
                   stop-embedded-host-controller
                   exit
