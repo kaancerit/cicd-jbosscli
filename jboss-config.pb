@@ -11,12 +11,23 @@
                   # You can add/remove commands in below for JBoss CLI
                   # Start embadded controller
                   embed-host-controller --std-out=echo
+                  
                   # Create Security Realm and add keystore to config
                   /host=master/core-service=management/security-realm=MYRealm/:add
                   /host=master/core-service=management/security-realm=MYRealm/server-identity= \
                   ssl:add(keystore-path=/JBOSS/Certificate/identity_keystore.jks, \
                   keystore-relative-to=jboss.domain.config.dir, \
                   keystore-password={{jboss_jks_pass}}, alias=jbossserver)
+                  
+                  # Create normal and XA datasource via Jboss CLI
+                  /profile=full-ha/subsystem=datasources/jdbc-driver=oracle:add(driver-module-name=com.oracle,driver-name=oracle,driver-xa-datasource-class-name=oracle.jdbc.driver.OracleDriver)
+                  /profile=full-ha/subsystem=datasources/jdbc-driver=oracleXA:add(driver-module-name=com.oracle,driver-name=oracleXA,driver-xa-datasource-class-name="oracle.jdbc.xa.client.OracleXADataSource")
+                  /profile=full-ha/subsystem=datasources/xa-data-source=OraSource:add(driver-name=oracleXA,enabled=true,jndi-name="java:/OraSource",use-ccm=true,user-name={{USERNAME}},password={{PASSWORD}},min-pool-size=1,initial-pool-size=10,max-pool-size=200,same-rm-override=false,no-tx-separate-pool=true,valid-connection-checker-class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleValidConnectionChecker",validate-on-match=true,background-validation=false,stale-connection-checker-class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleStaleConnectionChecker",exception-sorter-class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleExceptionSorter")
+                  /profile=full-ha/subsystem=datasources/xa-data-source=OraSource/xa-datasource-properties="URL":add(value="jdbc:oracle:thin:@{{ DBIP }}:{{ DBPORT }}:{{ DBSN }}")
+                  /profile=full-ha/subsystem=datasources/xa-data-source=XAOracleDS:add(driver-name=oracleXA,enabled=true,jndi-name="java:/XAOracleDS",use-ccm=true,user-name={{XAUSERNAME}},password={{XAPASSWORD}},min-pool-size=1,initial-pool-size=10,max-pool-size=200,same-rm-override=false,no-tx-separate-pool=true,valid-connection-checker-class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleValidConnectionChecker",validate-on-match=true,background-validation=false,stale-connection-checker-class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleStaleConnectionChecker",exception-sorter-class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleExceptionSorter")
+                  /profile=full-ha/subsystem=datasources/xa-data-source=XAOracleDS/xa-datasource-properties="URL":add(value="jdbc:oracle:thin:@{{ DBIP }}:{{ DBPORT }}:{{ DBSN }}")
+
+                  
                   # Stop embadded controller
                   stop-embedded-host-controller
                   exit
