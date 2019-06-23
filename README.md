@@ -5,7 +5,6 @@ Sample usage:
 
 ansible-playbook jboss-config.pb \
 -e jboss_jks_pass="changeit" \
--e ANAME="companyidentity" \
 -e USERNAME=DBSCHEMAUSERFORNONXADATASOURCE \
 -e PASSWORD=DBSCHEMAPASSWORDFORNONXADATASOURCE \
 -e XAUSERNAME=DBSCHEMAUSERFORXADATASOURCE \
